@@ -1,37 +1,43 @@
+import os
+
 with open('cookbook.txt', encoding='utf-8') as file:
     cook_book = {}
-    for i in file:
-        recepie_name = i.strip()
-        ingredients_count = file.readline()
+
+    for k in file:
         ingredients = []
+        recepie_name = k.strip()
+        # print(recepie_name)
+        ingredients_count = file.readline()
+        cook_book[recepie_name] = ingredients
+        # print(ingredients_count)
+
         for p in range(int(ingredients_count)):
             recepie = file.readline().strip().split(' | ')
-            product, quantity, word = recepie
-            ingredients.append({'product': product, 'quantity': quantity, 'measure': word})
+            product, quantity, weight = recepie
+            ingredients.append({'ingredient_name': product, 'quantity': quantity, 'measure': weight})
         file.readline()
-    cook_book[recepie_name] = ingredients
+
+    # print(cook_book)
+    # print(ingredients)
     
+    def get_shop_list_by_dishes(dishes, person_count):
+        result ={}
+        for dish in dishes:
+            if dish in cook_book:
+                for ingredient in cook_book[dish]:
+                    ingredient_name = ingredient['ingredient_name']
+                    measure = ingredient['measure']
+                    quantity = ingredient['quantity'] * person_count
+                    if ingredient_name in result:
+                        result[ingredient_name]['quantity'] += quantity
+                    else:
+                        result[ingredient_name] = {'measure': measure, 'quantity': quantity}
+        for ingredient, values in result.items():
+            print(f"  '{ingredient}': {values},")
+    get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
+                    
+
+
+
+
     
-    # print(f'cook_book = {cook_book}')
-    
-def get_shop_list_by_dishes(dishes, person_count):
-    result ={}
-    for dish in dishes:
-        if dish in cook_book:
-            for consist in cook_book[dish]:
-                result ({'measure': cook_book['measure'],'quantity': (int(cook_book['quantity'])*int(person_count))})
-        else:
-            print(f'Блюда "{dish}" нет в книге рецептов')
-    return result
-                
-
-get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
-
-    
-
-
-    
-    
-
-
-
